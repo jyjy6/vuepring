@@ -34,9 +34,7 @@ public class Member {
 //    계정 정보 마지막 수정 날짜.
     private LocalDateTime updatedAt;
 
-    private Boolean isActive;
-
-    private String role;
+    private String role = "USER";
 
 
 
@@ -57,9 +55,6 @@ public class Member {
         return password;
     }
 
-    public Boolean getActive() {
-        return isActive;
-    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -84,9 +79,7 @@ public class Member {
 //    Setter
 
 
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
+
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
