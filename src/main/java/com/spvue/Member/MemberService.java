@@ -16,11 +16,11 @@ public class MemberService {
 
 
     public Member registerUser(Member member) {
-        // 사용자 이름이 이미 존재하는지 확인
+        // 사용자 이름, 닉네임이 이미 존재하는지 확인
         if (memberRepository.existsByUsername(member.getUsername())) {
             throw new RuntimeException("Username already exists");
         } else if(memberRepository.existsByDisplayName(member.getDisplayName())){
-            throw new RuntimeException("Username already exists");
+            throw new RuntimeException("displayName already exists");
         }
         // 비밀번호 암호화
         member.setPassword(passwordEncoder.encode(member.getPassword()));
