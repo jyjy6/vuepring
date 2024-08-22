@@ -37,16 +37,13 @@ public class MemberController {
         if (auth.getPrincipal() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
         }
-        // 사용자 정보를 가져오는 로직
-        // 예: return ResponseEntity.ok(userService.getUserInfo(principal.getName()));
+
         var result = memberRepository.findByUsername(auth.getName());
         var data = result.get();
 
         MemberDto userInfo = new MemberDto( data.getUsername(), data.getDisplayName(),
                                             data.getEmail(), data.getPhone(),
                                             data.getCreatedAt(), data.getUpdatedAt(), data.getRole());
-
-
         return ResponseEntity.ok(userInfo);
     }
 
