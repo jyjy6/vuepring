@@ -42,7 +42,8 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 요청을 처리할 URL
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST")) // POST 요청을 사용
-                        .logoutSuccessUrl("/")  // 로그아웃 후 리다이렉트할 URL
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제
                         .permitAll()
                 );
 
