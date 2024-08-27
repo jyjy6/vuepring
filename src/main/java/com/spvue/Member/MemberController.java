@@ -1,6 +1,7 @@
 package com.spvue.Member;
 
 import com.spvue.CustomUserDetails;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,20 @@ public class MemberController {
                                             data.getCreatedAt(), data.getUpdatedAt(), data.getRole());
         return ResponseEntity.ok(userInfo);
     }
+
+
+
+
+    @GetMapping("/status")
+    public ResponseEntity<String> getSessionStatus(HttpSession session, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            return ResponseEntity.ok("세션 유지 중 (인증됨)");
+        } else if (session != null && session.getAttribute("user") != null) {
+            return ResponseEntity.ok("세션 유지 중 (세션에 사용자 정보 있음)");
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
+    }
+
 
 }
 
