@@ -7,8 +7,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.ToString;
 
-@Entity
+
 @ToString
+@Entity
 public class Boxer {
 
     @Id
@@ -35,6 +36,7 @@ public class Boxer {
     @JsonProperty("birthplace")
     private String birthPlace;
     private String author;
+    private Integer ranking;
 
     // 기본 생성자
     public Boxer() {
@@ -43,7 +45,7 @@ public class Boxer {
     // 모든 필드를 포함한 생성자
     public Boxer(Long id, String division, String name, Integer rating, Integer bouts, Integer rounds, String ko,
                  String career, String debut, String title, String birthName, String sex, Integer age,
-                 String country, String stance, String reach, String height, String birthPlace, String author) {
+                 String country, String stance, String reach, String height, String birthPlace, String author, Integer ranking) {
         this.id = id;
         this.division = division;
         this.name = name;
@@ -62,6 +64,7 @@ public class Boxer {
         this.reach = reach;
         this.height = height;
         this.birthPlace = birthPlace;
+        this.ranking = ranking;
     }
 
     // Getter와 Setter 메서드들
@@ -215,5 +218,13 @@ public class Boxer {
 
     public String getAuthor() {
         return author;
+    }
+
+    public Integer getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(Integer ranking) {
+        this.ranking = ranking;
     }
 }
