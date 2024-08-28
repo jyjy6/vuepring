@@ -24,4 +24,9 @@ public class BoxerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
         }
     }
+
+//   겟매핑으로 복서의 체급을 받아서 해당 복서의 체급에 맞는 행들 다 가져와서 리스트에 넣어주세요~ 대신 정렬은 순위에 맞게 오름차순으로 해주세요.
+
+
+
 }
