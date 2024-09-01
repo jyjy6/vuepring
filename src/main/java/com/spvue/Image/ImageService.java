@@ -12,13 +12,14 @@ import java.time.Duration;
 @RequiredArgsConstructor
 @Service
 public class ImageService {
+    private final ImageRepository imageRepository;
+
 
 
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
     private final S3Presigner s3Presigner;
-
     String createPresignedUrl(String path) {
         var putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucket) //올릴 버킷명
@@ -34,6 +35,16 @@ public class ImageService {
 
         return s3Presigner.presignPutObject(preSignRequest).url().toString();
     }
+
+    public void saveImageInfo(String imageUrl, String imageName, String role){
+        Image image = new Image();
+        image.setImageUrl(imageUrl);
+        image.setImageName(imageName);
+        image.setRole(role);
+        imageRepository.save(image);
+    }
+
+
 
 
 }
