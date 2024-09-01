@@ -1,11 +1,11 @@
 package com.spvue.Boxer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 
 @ToString
@@ -37,6 +37,9 @@ public class Boxer {
     private String birthPlace;
     private String author;
     private Integer ranking;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     // 기본 생성자
     public Boxer() {
@@ -45,7 +48,7 @@ public class Boxer {
     // 모든 필드를 포함한 생성자
     public Boxer(Long id, String division, String name, Integer rating, Integer bouts, Integer rounds, String ko,
                  String career, String debut, String title, String birthName, String sex, Integer age,
-                 String country, String stance, String reach, String height, String birthPlace, String author, Integer ranking) {
+                 String country, String stance, String reach, String height, String birthPlace, String author, Integer ranking, LocalDateTime createdAt) {
         this.id = id;
         this.division = division;
         this.name = name;
@@ -65,6 +68,7 @@ public class Boxer {
         this.height = height;
         this.birthPlace = birthPlace;
         this.ranking = ranking;
+        this.createdAt = createdAt;
     }
 
     // Getter와 Setter 메서드들
@@ -226,5 +230,13 @@ public class Boxer {
 
     public void setRanking(Integer ranking) {
         this.ranking = ranking;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
