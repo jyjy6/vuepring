@@ -26,7 +26,6 @@ public class ImageController {
 //        지금은 업로드한것만으로 이미지를 저장하고있는데 나중에는 업로드완료하고글작성하면 이미지정보 DB에 저장할 수 있도록 생각해보자.
 
         return result;
-
     }
 
 }

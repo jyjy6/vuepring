@@ -2,7 +2,8 @@ package com.spvue.Boxer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -14,5 +15,12 @@ public class BoxerService {
         boxerRepository.save(boxer);
 
     }
+
+    public List<Boxer> getAllBoxerByDivision(String weightClass) {
+        List<Boxer> boxerList = boxerRepository.getAllBoxerByDivision(weightClass);
+        return boxerList;
+    }
+
+
 
 }

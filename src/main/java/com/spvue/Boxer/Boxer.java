@@ -40,6 +40,7 @@ public class Boxer {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+    private String boxerImg;
 
     // 기본 생성자
     public Boxer() {
@@ -48,7 +49,7 @@ public class Boxer {
     // 모든 필드를 포함한 생성자
     public Boxer(Long id, String division, String name, Integer rating, Integer bouts, Integer rounds, String ko,
                  String career, String debut, String title, String birthName, String sex, Integer age,
-                 String country, String stance, String reach, String height, String birthPlace, String author, Integer ranking, LocalDateTime createdAt) {
+                 String country, String stance, String reach, String height, String birthPlace, String author, Integer ranking, LocalDateTime createdAt, String boxerImg) {
         this.id = id;
         this.division = division;
         this.name = name;
@@ -69,6 +70,7 @@ public class Boxer {
         this.birthPlace = birthPlace;
         this.ranking = ranking;
         this.createdAt = createdAt;
+        this.boxerImg = boxerImg;
     }
 
     // Getter와 Setter 메서드들
@@ -238,5 +240,13 @@ public class Boxer {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getBoxerImg() {
+        return boxerImg;
+    }
+
+    public void setBoxerImg(String boxerImg) {
+        this.boxerImg = boxerImg;
     }
 }
