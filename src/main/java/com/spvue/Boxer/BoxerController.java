@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -29,7 +30,9 @@ public class BoxerController {
 @GetMapping
 public List<Boxer> getAllBoxerByWeightClass(String weightClass) {
     var result = boxerService.getAllBoxerByDivision(weightClass);
-    System.out.println(result);
+    // ranking 기준으로 오름차순 정렬
+    result.sort(Comparator.comparingInt(Boxer::getRanking));
+
     return result;
 }
 
