@@ -1,21 +1,27 @@
 package com.spvue.News;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/news")
 public class NewsController {
+    private final NewsRepository newsRepository;
 
 
-//    @PostMapping("/post")
-//    public String postNews(@RequestBody News news){
-//
-//
-//
-//    }
+    @PostMapping("/post")
+    public ResponseEntity<String> postNews(@RequestBody News news){
+        newsRepository.save(news);
+        return ResponseEntity.ok("Post created");
+    }
+
+    @GetMapping("/data")
+    public List<News> allNewsData(){
+        List<News> result = newsRepository.findAll();
+        return result;
+    }
 }
