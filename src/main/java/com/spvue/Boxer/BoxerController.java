@@ -30,6 +30,7 @@ public class BoxerController {
 @GetMapping
 public List<Boxer> getAllBoxerByWeightClass(String weightClass) {
     var result = boxerService.getAllBoxerByDivision(weightClass);
+
     // ranking 기준으로 오름차순 정렬
     result.sort(Comparator.comparingInt(Boxer::getRanking));
 

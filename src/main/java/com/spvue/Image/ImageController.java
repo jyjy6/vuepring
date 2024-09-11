@@ -17,7 +17,7 @@ public class ImageController {
     @ResponseBody
     @GetMapping("/presigned-url")
     public String getImgUrl(@RequestParam String filename,
-                            @RequestParam(required = false, defaultValue = "USER") String role){
+                            @RequestParam String role){
         String decodedFilename = URLDecoder.decode(filename, StandardCharsets.UTF_8);
         System.out.println(decodedFilename);
         var result = imageService.createPresignedUrl("test/" + decodedFilename);
