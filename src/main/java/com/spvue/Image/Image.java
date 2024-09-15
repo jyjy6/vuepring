@@ -23,6 +23,9 @@ public class Image {
     @Column(updatable = false)
     private LocalDateTime createdAt;
     private String role = "USER";
-
+    private boolean imgUsed = false;
+//    Optional<Image> image = imageRepository.findByImageUrl(imgURL);
+//
+//    image가 null이아니면private boolean imgUsed = false;컬럼의 값을 1로 바꾸고 싶은데 어캐함
 
 }

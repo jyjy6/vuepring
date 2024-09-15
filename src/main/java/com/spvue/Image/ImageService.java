@@ -8,6 +8,8 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 import java.time.Duration;
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -42,6 +44,20 @@ public class ImageService {
         image.setImageName(imageName);
         image.setRole(role);
         imageRepository.save(image);
+    }
+
+    public void imageFinalSave(String imgURL){
+        Optional<Image> imageOptional = imageRepository.findByImageUrl(imgURL);
+        if (imageOptional.isPresent()) {
+            Image image = imageOptional.get();
+            image.setImgUsed(true);  // imgUsed 값을 true로 변경
+            imageRepository.save(image);  // 변경된 값 저장
+        }
+    }
+
+    public String extractS3Key(String imageUrl) {
+        // S3 URL에서 버킷 이름과 도메인 부분을 제거하고 나머지 경로만 추출
+        return imageUrl.substring(imageUrl.indexOf("test"));  // 'test' 경로 이후부터 추출
     }
 
 

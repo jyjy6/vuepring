@@ -1,5 +1,8 @@
 package com.spvue.Boxer;
 
+import com.spvue.Image.Image;
+import com.spvue.Image.ImageRepository;
+import com.spvue.Image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,11 +19,15 @@ import java.util.List;
 public class BoxerController {
 
     private final BoxerService boxerService;
+    private final ImageService imageService;
 
     @PostMapping("/add")
     public ResponseEntity<String> addBoxer(@RequestBody Boxer boxer) {
         try {
             boxerService.saveBoxer(boxer);
+            String imgURL = boxer.getBoxerImg();
+            imageService.imageFinalSave(imgURL);
+
             return ResponseEntity.ok("성공적으로 저장되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
