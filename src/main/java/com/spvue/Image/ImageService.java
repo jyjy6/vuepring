@@ -57,7 +57,7 @@ public class ImageService {
 
     public String extractS3Key(String imageUrl) {
         // S3 URL에서 버킷 이름과 도메인 부분을 제거하고 나머지 경로만 추출
-        return imageUrl.substring(imageUrl.indexOf("test"));  // 'test' 경로 이후부터 추출
+        return imageUrl.substring(imageUrl.indexOf("test"));  // 'test'(폴더이름) 경로 이후부터 추출. 추후 실제 서비스에서는 이미지 저장경로에 맞게 변경
     }
 
 

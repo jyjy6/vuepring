@@ -20,6 +20,8 @@ public class BoxerController {
 
     private final BoxerService boxerService;
     private final ImageService imageService;
+    private final BoxerRepository boxerRepository;
+
 
     @PostMapping("/add")
     public ResponseEntity<String> addBoxer(@RequestBody Boxer boxer) {
@@ -35,15 +37,16 @@ public class BoxerController {
     }
 
 //   겟매핑으로 복서의 체급을 받아서 해당 복서의 체급에 맞는 행들 다 가져와서 리스트에 넣어주세요~ 대신 정렬은 순위에 맞게 오름차순으로 해주세요.
-@GetMapping
-public List<Boxer> getAllBoxerByWeightClass(String weightClass) {
-    var result = boxerService.getAllBoxerByDivision(weightClass);
+    @GetMapping
+    public List<Boxer> getAllBoxerByWeightClass(String weightClass) {
+        var result = boxerService.getAllBoxerByDivision(weightClass);
 
-    // ranking 기준으로 오름차순 정렬
-    result.sort(Comparator.comparingInt(Boxer::getRanking));
+        // ranking 기준으로 오름차순 정렬
+        result.sort(Comparator.comparingInt(Boxer::getRanking));
 
-    return result;
-}
+        return result;
+    }
+
 
 
 }
