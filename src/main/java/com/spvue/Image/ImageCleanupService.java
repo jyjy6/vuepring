@@ -21,11 +21,10 @@ public class ImageCleanupService {
     private final ImageService imageService;
 
     // 매 시간마다 불필요한 파일 삭제 작업 실행
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 1800000)
     public void cleanupUnusedImages() {
         // 일정 시간이 지나도 사용되지 않은 이미지를 조회
         List<Image> unusedImages = imageRepository.findByImgUsedFalse();
-
 
         for (Image image : unusedImages) {
             // S3에서 파일 삭제
@@ -40,4 +39,7 @@ public class ImageCleanupService {
             imageRepository.delete(image);
         }
     }
+
+
+
 }
