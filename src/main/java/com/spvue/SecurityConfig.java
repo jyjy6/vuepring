@@ -24,9 +24,9 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable());
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()  // 인증없이 허용할 URL
                         .requestMatchers("/api/members/status").authenticated()
-                        .anyRequest().authenticated()  // 나머지 요청은 인증이 필요
+                        .requestMatchers("/api/p4p/admin").hasRole("ADMIN")
+                        .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/login") // 로그인 요청을 처리할 URL
@@ -34,6 +34,8 @@ public class SecurityConfig {
                             // 로그인 성공 처리
                             response.setStatus(HttpServletResponse.SC_OK);
                             response.getWriter().write("로그인 성공");
+                            System.out.println("Authenticated user: " + authentication.getName());
+                            System.out.println("Authorities: " + authentication.getAuthorities());
                         })
                         .failureHandler((request, response, exception) -> {
                             // 로그인 실패 처리
