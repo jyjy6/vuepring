@@ -54,7 +54,7 @@ public class MemberController {
     @GetMapping("/status")
     public ResponseEntity<String> getSessionStatus(HttpSession session, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return ResponseEntity.ok("세션 유지 중 (인증됨)");
+            return ResponseEntity.ok("세션 유지 중 (인증됨)"+authentication.getAuthorities());
         } else if (session != null && session.getAttribute("user") != null) {
             return ResponseEntity.ok("세션 유지 중 (세션에 사용자 정보 있음)");
         }
