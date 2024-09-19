@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,7 @@ public class P4PController {
     private final P4PRepository p4pRepository;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/admin")
+    @PostMapping
     public ResponseEntity<?> updateP4PRanking(@RequestBody P4PDto p4pDto) {
         Boxer boxer = boxerRepository.findById(p4pDto.getBoxerId())
                 .orElseThrow(() -> new EntityNotFoundException("Boxer not found with id: " + p4pDto.getBoxerId()));
@@ -38,15 +39,24 @@ public class P4PController {
     }
 
     @GetMapping
-    public List<P4P> allP4P(){
-        Pageable pageable = PageRequest.of(0, 10); // 첫 번째 페이지에서 10개의 행을 가져옴
-        List<P4P> result = p4pRepository.findAll();
+    public List<P4P> allP4P() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.asc("p4pRanking"))); // 첫 번째 페이지에서 10개의 행을 가져오며, p4pRanking으로 오름차순 정렬
+        List<P4P> result = p4pRepository.findAll(pageable).getContent(); // 페이징된 결과의 콘텐츠만 가져옴
 
-        result.sort(Comparator.comparingInt(P4P::getP4pRanking)); // p4pRanking으로 오름차순 정렬
         return result;
-
-
     }
+//    옛날코드
+//    @GetMapping
+//    public List<P4P> allP4P(){
+//        Pageable pageable = PageRequest.of(0, 10); // 첫 번째 페이지에서 10개의 행을 가져옴
+//        List<P4P> result = p4pRepository.findAll();
+//
+//        result.sort(Comparator.comparingInt(P4P::getP4pRanking)); // p4pRanking으로 오름차순 정렬
+//        return result;
+//
+//
+//    }
+
 
 
 
