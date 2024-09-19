@@ -26,6 +26,8 @@ public class P4P {
 
     private Integer p4pScore;
     private Integer p4pRanking;
+    private Integer previousRanking;
+
 
     private LocalDateTime rankingDate;
     public void updateRankingDate() {

@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
@@ -24,9 +27,8 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable());
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/members/status").authenticated()
-                        .requestMatchers("/api/p4p/admin").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().permitAll() // 나머지 요청도 허용
+
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/login") // 로그인 요청을 처리할 URL
@@ -55,7 +57,9 @@ public class SecurityConfig {
                         .sessionFixation().migrateSession()
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
-                );
+                ).httpBasic(Customizer.withDefaults())  // 기본 인증 활성화
+                .userDetailsService(userDetailsService); // CustomUserDetailsService 사용
+
 
         return http.build();
     }
