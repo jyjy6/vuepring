@@ -12,7 +12,6 @@ import java.util.List;
 public class NewsController {
     private final NewsRepository newsRepository;
 
-
     @PostMapping("/post")
     public ResponseEntity<String> postNews(@RequestBody News news){
         newsRepository.save(news);
