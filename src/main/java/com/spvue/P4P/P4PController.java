@@ -31,12 +31,26 @@ public class P4PController {
         Boxer boxer = boxerRepository.findById(p4pDto.getBoxerId())
                 .orElseThrow(() -> new EntityNotFoundException("Boxer not found with id: " + p4pDto.getBoxerId()));
 
-
         // 랭킹 서비스 호출하여 랭킹 업데이트
         p4pService.updateBoxerRanking(boxer, p4pDto.getP4pScore(), p4pDto.getP4pRanking());
 
         return ResponseEntity.ok("P4P 랭킹이 업데이트되었습니다.");
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/log")
+    public ResponseEntity<?> updateP4PLog() {
+        p4pService.updateP4PLog();
+        return ResponseEntity.ok("P4P 로그가 성공적으로 저장되었습니다.");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/reset")
+    public ResponseEntity<?> setPreviousRank() {
+        p4pService.setPreviousRank();
+        return ResponseEntity.ok("이전 랭킹이 성공적으로 저장되었습니다.");
+    }
+
 
     @GetMapping
     public List<P4P> allP4P() {
