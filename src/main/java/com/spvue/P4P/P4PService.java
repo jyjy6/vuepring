@@ -34,7 +34,6 @@ public class P4PService {
         // 기존 랭킹과 새로운 랭킹 비교
         Integer oldRanking = targetP4P.getP4pRanking() != null ? targetP4P.getP4pRanking() : 9999;
 
-
         // 기존 랭킹(oldRanking)과 새로운 랭킹(newRanking) 범위에 있는 복서들만 조회
         if (newRanking < oldRanking) {
             // 새로운 랭킹이 더 높은 경우 (예: 5위에서 2위로 올라감)
@@ -57,9 +56,6 @@ public class P4PService {
         targetP4P.setP4pRanking(newRanking);
         targetP4P.updateRankingDate(); // 랭킹 변경 날짜 업데이트
         p4pRepository.save(targetP4P); // 임시 저장 (복서의 새로운 랭킹만 적용)
-
-
-
 
 
     }

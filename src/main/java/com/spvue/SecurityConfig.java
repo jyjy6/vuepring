@@ -28,7 +28,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll() // 나머지 요청도 허용
-
                 )
                 .formLogin(form -> form
                         .loginProcessingUrl("/login") // 로그인 요청을 처리할 URL
