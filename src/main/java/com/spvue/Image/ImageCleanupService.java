@@ -25,7 +25,6 @@ public class ImageCleanupService {
     public void cleanupUnusedImages() {
         // 일정 시간이 지나도 사용되지 않은 이미지를 조회
         List<Image> unusedImages = imageRepository.findByImgUsedFalse();
-
         for (Image image : unusedImages) {
             // S3에서 파일 삭제
             String s3Key = imageService.extractS3Key(image.getImageUrl());
@@ -34,7 +33,6 @@ public class ImageCleanupService {
                     .bucket(bucket)
                     .key(s3Key)
                     .build());
-
             // DB에서 파일 정보 삭제
             imageRepository.delete(image);
         }
