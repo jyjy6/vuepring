@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/news")
 public class NewsController {
     private final NewsRepository newsRepository;
-    private final ImageService imageService;
+    private final NewsService newsService;
 
     @PostMapping("/post")
     public ResponseEntity<String> postNews(@RequestBody News news){
