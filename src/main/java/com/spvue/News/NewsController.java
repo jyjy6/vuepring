@@ -14,17 +14,11 @@ import java.util.List;
 @RequestMapping("/api/news")
 public class NewsController {
     private final NewsRepository newsRepository;
-    private final ImageService imageService;
+    private final NewsService newsService;
 
     @PostMapping("/post")
     public ResponseEntity<String> postNews(@RequestBody News news){
-        newsRepository.save(news);
-        List<String> URLs = news.getFileURLs();
-        for (String imgURL : URLs) {
-            imageService.imageFinalSave(imgURL);  // 각 URL에 대해 imageFinalSave 호출
-        }
-
-
+        newsService.postNews(news);
 
         return ResponseEntity.ok("Post created");
     }
