@@ -24,8 +24,6 @@ public class NewsController {
             imageService.imageFinalSave(imgURL);  // 각 URL에 대해 imageFinalSave 호출
         }
 
-
-
         return ResponseEntity.ok("Post created");
     }
 
