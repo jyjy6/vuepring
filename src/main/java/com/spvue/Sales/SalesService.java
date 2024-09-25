@@ -7,7 +7,9 @@ import com.spvue.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,10 +28,15 @@ public class SalesService {
                 .orElseThrow(() -> new RuntimeException("Value not found!"));
         sales.setAuthor(member);
 
+
         salesRepository.save(sales);
         List<String> URLs = sales.getFileURLs();
         for (String imgURL : URLs) {
             imageService.imageFinalSave(imgURL);  // 각 URL에 대해 imageFinalSave 호출
         }
+    }
+
+    public List<Sales> findAll() {
+        return salesRepository.findAll();
     }
 }
