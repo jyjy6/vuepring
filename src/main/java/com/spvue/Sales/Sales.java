@@ -1,5 +1,6 @@
 package com.spvue.Sales;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spvue.Member.Member;
 import com.spvue.Sales.Embeddable.Benefit;
 import com.spvue.Sales.Embeddable.Discount;
@@ -53,5 +54,6 @@ public class Sales {
     private LocalDateTime createdAt;  // 생성일
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
+    @JsonIgnore
     private Member author;  // 작성자
 }
