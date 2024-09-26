@@ -30,27 +30,29 @@ public class SalesController {
     }
 
     @GetMapping("/allitems")
-    public ResponseEntity<List<SalesAllDTO>> getAllSales() {
+    public ResponseEntity<List<Sales>> getAllSales() {
         List<Sales> salesList = salesService.findAll();
-        List<SalesAllDTO> salesDTOList = salesList.stream()
-                .map(sale -> {
-                    SalesAllDTO dto = new SalesAllDTO();
-                    dto.setId(sale.getId());
-                    dto.setName(sale.getName());
-                    dto.setFileURLs(sale.getFileURLs());
-                    dto.setPrice(sale.getPrice());
-                    dto.setShipping(sale.getShipping());
-                    dto.setManufacturer(sale.getManufacturer());
-                    dto.setBrand(sale.getBrand());
-                    dto.setCondition(sale.getCondition());
-                    dto.setOrigin(sale.getOrigin());
-                    dto.setCreatedAt(sale.getCreatedAt());
-                    return dto;
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(salesDTOList);
+        System.out.println(salesList);
+        return ResponseEntity.ok(salesList);
     }
 
+//
+//    List<SalesAllDTO> salesDTOList = salesList.stream()
+//            .map(sale -> {
+//                SalesAllDTO dto = new SalesAllDTO();
+//                dto.setId(sale.getId());
+//                dto.setName(sale.getName());
+//                dto.setFileURLs(sale.getFileURLs());
+//                dto.setPrice(sale.getPrice());
+//                dto.setShipping(sale.getShipping());
+//                dto.setManufacturer(sale.getManufacturer());
+//                dto.setBrand(sale.getBrand());
+//                dto.setCondition(sale.getCondition());
+//                dto.setOrigin(sale.getOrigin());
+//                dto.setCreatedAt(sale.getCreatedAt());
+//                return dto;
+//            })
+//            .collect(Collectors.toList());
 
 
 

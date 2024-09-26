@@ -18,6 +18,7 @@ public class HomeVideo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    private String title;
     @Lob // 큰 텍스트 데이터 저장
     @Column(name = "content") // Optional: 열 이름 지정
     private String content;

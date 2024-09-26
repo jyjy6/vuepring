@@ -1,5 +1,11 @@
 package com.spvue.Sales.DTO;
 
+import com.spvue.Member.Member;
+import com.spvue.Sales.Embeddable.Benefit;
+import com.spvue.Sales.Embeddable.Discount;
+import com.spvue.Sales.Embeddable.Option;
+import com.spvue.Sales.Embeddable.ShippingInfo;
+import jakarta.persistence.ElementCollection;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +26,13 @@ public class SalesAllDTO {
         private String condition;
         private String origin;
         private LocalDateTime createdAt;
-        private String authorName; // 필요한 정보만 포함
+        private String author; // 필요한 정보만 포함
+        private List<Option> options;
+        private List<Benefit> benefits;
+        private List<ShippingInfo> shippingInfo;
+        @ElementCollection
+        private List<Discount> discounts;
+
 
         // Getters and Setters
 }
