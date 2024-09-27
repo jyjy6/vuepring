@@ -1,12 +1,14 @@
 package com.spvue.Member;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberDto{
     private String username;
     private String displayName;
@@ -15,20 +17,5 @@ public class MemberDto{
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String role;
-
-
-
-    MemberDto(String username, String displayName, String email,
-              String phone, LocalDateTime createdAt, LocalDateTime updatedAt, String role ){
-        this.username = username;
-        this.displayName = displayName;
-        this.email = email;
-        this.phone = phone;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.role = role;
-
-    }
-
 
 }
