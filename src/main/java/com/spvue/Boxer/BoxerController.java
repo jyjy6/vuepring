@@ -47,6 +47,24 @@ public class BoxerController {
         return result;
     }
 
+    @PutMapping("/modify")
+    public ResponseEntity<String> modifyBoxer(@RequestBody Boxer boxer) {
+        try {
+            boxerService.saveBoxer(boxer);
+            String imgURL = boxer.getBoxerImg();
+            imageService.imageFinalSave(imgURL);
+            return ResponseEntity.ok("성공적으로 저장되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    public Boxer getBoxerData(@PathVariable Long id){
+        Boxer result = boxerRepository.findById(id).orElseThrow(() -> new RuntimeException("Value not found!"));
+        return result;
+    }
+
 
 
 }

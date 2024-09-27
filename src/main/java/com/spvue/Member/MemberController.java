@@ -40,11 +40,18 @@ public class MemberController {
         }
 
         var result = memberRepository.findByUsername(auth.getName());
-        var data = result.get();
+        Member data = result.get();
 
-        MemberDto userInfo = new MemberDto( data.getUsername(), data.getDisplayName(),
-                                            data.getEmail(), data.getPhone(),
-                                            data.getCreatedAt(), data.getUpdatedAt(), data.getRole());
+        MemberDto userInfo = MemberDto.builder()
+                .username(data.getUsername())
+                .displayName(data.getDisplayName())
+                .email(data.getEmail())
+                .phone(data.getPhone())
+                .createdAt(data.getCreatedAt())
+                .updatedAt(data.getUpdatedAt())
+                .role(data.getRole())
+                .build();
+
         return ResponseEntity.ok(userInfo);
     }
 
