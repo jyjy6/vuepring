@@ -3,6 +3,7 @@ package com.spvue.Boxer;
 import com.spvue.Image.Image;
 import com.spvue.Image.ImageRepository;
 import com.spvue.Image.ImageService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +48,11 @@ public class BoxerController {
         return result;
     }
 
+
     @PutMapping("/modify")
     public ResponseEntity<String> modifyBoxer(@RequestBody Boxer boxer) {
         try {
+            boxerService.updateBoxerRank(boxer);
             boxerService.saveBoxer(boxer);
             String imgURL = boxer.getBoxerImg();
             imageService.imageFinalSave(imgURL);
@@ -63,6 +66,12 @@ public class BoxerController {
     public Boxer getBoxerData(@PathVariable Long id){
         Boxer result = boxerRepository.findById(id).orElseThrow(() -> new RuntimeException("Value not found!"));
         return result;
+    }
+
+    @GetMapping("/test")
+    public void test(){
+        List<Boxer> testBoxers = boxerRepository.findByDivisionAndRankingBetween("heavy", 1, 3);
+        System.out.println(testBoxers);
     }
 
 
