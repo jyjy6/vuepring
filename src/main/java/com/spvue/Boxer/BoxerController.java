@@ -56,6 +56,7 @@ public class BoxerController {
             boxerService.saveBoxer(boxer);
             String imgURL = boxer.getBoxerImg();
             imageService.imageFinalSave(imgURL);
+
             return ResponseEntity.ok("성공적으로 저장되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생: " + e.getMessage());
@@ -67,13 +68,5 @@ public class BoxerController {
         Boxer result = boxerRepository.findById(id).orElseThrow(() -> new RuntimeException("Value not found!"));
         return result;
     }
-
-    @GetMapping("/test")
-    public void test(){
-        List<Boxer> testBoxers = boxerRepository.findByDivisionAndRankingBetween("heavy", 1, 3);
-        System.out.println(testBoxers);
-    }
-
-
 
 }
