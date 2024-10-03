@@ -33,6 +33,17 @@ public class MemberController {
         }
     }
 
+    @PutMapping("/edit")
+    public ResponseEntity<String> editUser(@RequestBody Member member, Authentication auth) {
+        try {
+            memberService.editUser(member, auth);
+            return new ResponseEntity<>("User edit successfully", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @GetMapping("/userinfo")
     public ResponseEntity<?> getUserInfo(Authentication auth) {
         if (auth.getPrincipal() == null) {
@@ -43,6 +54,7 @@ public class MemberController {
         Member data = result.get();
 
         MemberDto userInfo = MemberDto.builder()
+                .id(data.getId())
                 .username(data.getUsername())
                 .displayName(data.getDisplayName())
                 .email(data.getEmail())
@@ -54,9 +66,6 @@ public class MemberController {
 
         return ResponseEntity.ok(userInfo);
     }
-
-
-
 
     @GetMapping("/status")
     public ResponseEntity<String> getSessionStatus(HttpSession session, Authentication authentication) {
