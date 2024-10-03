@@ -3,7 +3,6 @@ package com.spvue.Sales;
 
 import com.spvue.CustomUserDetails;
 import com.spvue.Member.MemberRepository;
-import com.spvue.Sales.DTO.SalesAllDTO;
 import com.spvue.Sales.Embeddable.Benefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
