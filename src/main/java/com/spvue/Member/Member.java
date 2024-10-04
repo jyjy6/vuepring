@@ -3,6 +3,7 @@ package com.spvue.Member;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,8 @@ public class Member {
     private LocalDateTime createdAt;
 
 //    계정 정보 마지막 수정 날짜.
+    @UpdateTimestamp
+    @Column(updatable = true)
     private LocalDateTime updatedAt;
 
     private String role = "USER";
