@@ -1,5 +1,6 @@
 package com.spvue.Member;
 
+import ch.qos.logback.core.boolex.Matcher;
 import com.spvue.CustomUserDetails;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @PostMapping("/register")
@@ -42,6 +45,24 @@ public class MemberController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validatePassword(@RequestBody Map<String, String> requestBody) {
+        String id = requestBody.get("id"); // id 추출
+        String pw = requestBody.get("pw"); // pw 추출
+
+        var targetMember = memberRepository.findByUsername(id)
+                .orElseThrow(() -> new RuntimeException("Value not found!"));
+        var correctPassword = targetMember.getPassword();
+        // 비밀번호 검증
+        if (passwordEncoder.matches(pw, correctPassword)) {
+            return ResponseEntity.ok().body("Valid");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid password");
+        }
+    }
+
 
 
     @GetMapping("/userinfo")

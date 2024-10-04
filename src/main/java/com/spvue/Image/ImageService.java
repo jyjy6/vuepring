@@ -33,7 +33,6 @@ public class ImageService {
                 .build();
 
         String presignedUrl = s3Presigner.presignPutObject(preSignRequest).url().toString();
-        System.out.println("Generated Presigned URL: " + presignedUrl);
 
         return s3Presigner.presignPutObject(preSignRequest).url().toString();
     }
