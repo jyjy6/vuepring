@@ -3,11 +3,15 @@ package com.spvue.Member;
 
 import com.spvue.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -39,6 +43,10 @@ public class MemberService {
 
     public Member editUser(Member member, Authentication auth) {
         String username = auth.getName();
+        if(!username.equals(member.getUsername())){
+            throw new IllegalArgumentException("아이디는 수정할 수 없습니다.");
+        }
+
         Member editTargetMember = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Member not found"));
         member.setId(editTargetMember.getId());
         member.setRole(editTargetMember.getRole());
@@ -51,6 +59,22 @@ public class MemberService {
         }
         // 사용자 저장
         return memberRepository.save(member);
+    }
+
+    public ResponseEntity<String> validatePw(@RequestBody Map<String, String> requestBody){
+        String id = requestBody.get("id"); // id 추출
+        String pw = requestBody.get("pw"); // pw 추출
+
+        var targetMember = memberRepository.findByUsername(id)
+                .orElseThrow(() -> new RuntimeException("Value not found!"));
+        var correctPassword = targetMember.getPassword();
+        // 비밀번호 검증
+        if (passwordEncoder.matches(pw, correctPassword)) {
+            return ResponseEntity.ok().body("Valid");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid password");
+        }
+
     }
 
 
