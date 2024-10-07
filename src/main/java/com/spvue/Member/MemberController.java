@@ -48,19 +48,8 @@ public class MemberController {
 
 
     @PostMapping("/validate")
-    public ResponseEntity<?> validatePassword(@RequestBody Map<String, String> requestBody) {
-        String id = requestBody.get("id"); // id 추출
-        String pw = requestBody.get("pw"); // pw 추출
-
-        var targetMember = memberRepository.findByUsername(id)
-                .orElseThrow(() -> new RuntimeException("Value not found!"));
-        var correctPassword = targetMember.getPassword();
-        // 비밀번호 검증
-        if (passwordEncoder.matches(pw, correctPassword)) {
-            return ResponseEntity.ok().body("Valid");
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid password");
-        }
+    public ResponseEntity<String> validatePassword(@RequestBody Map<String, String> requestBody) {
+        return memberService.validatePw(requestBody);
     }
 
 
