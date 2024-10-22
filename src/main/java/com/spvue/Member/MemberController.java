@@ -73,7 +73,6 @@ public class MemberController {
                 .updatedAt(data.getUpdatedAt())
                 .role(data.getRole())
                 .build();
-
         return ResponseEntity.ok(userInfo);
     }
 
