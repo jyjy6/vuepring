@@ -13,13 +13,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8081", "http://localhost:8082")  // 허용할 출처
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-                .allowedHeaders("*") // 허용할 헤더
-                .allowCredentials(true); // 쿠키와 인증 헤더 포함
+                .allowedOrigins("http://localhost:3000","http://localhost:8081", "http://frontend:3000", "http://frontend:8081")  // allowedOrigins("*") 대신 사용
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 
-        @Bean
+
+    @Bean
         public HttpSessionEventPublisher httpSessionEventPublisher() {
             return new HttpSessionEventPublisher();
         }
