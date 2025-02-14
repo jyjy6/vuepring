@@ -57,6 +57,8 @@ dependencies {
 	implementation 'org.hibernate:hibernate-core:6.2.0.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
+
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

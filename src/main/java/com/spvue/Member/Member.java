@@ -38,8 +38,8 @@ public class Member {
     @UpdateTimestamp
     @Column(updatable = true)
     private LocalDateTime updatedAt;
-
     private String role = "USER";
+
 
 
 

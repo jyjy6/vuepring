@@ -51,7 +51,8 @@ public class Orders {
         SHIPPING_STARTED(3),    // 배송 시작
         SHIPPING_COMPLETED(4),  // 배송 완료
         RETURN_IN_PROGRESS(5),  // 반품 진행
-        RETURN_COMPLETED(6);    // 반품 완료
+        RETURN_COMPLETED(6),    // 반품 완료
+        PURCHASE_COMPLETED(7);    // 반품 완료
 
         private final int code;
 
