@@ -25,7 +25,7 @@ public class News {
     private List<String> fileURLs; // 여러 파일 URL을 리스트로 받음
 
     private String title;
-    @Lob
+    @Column(name = "content", columnDefinition = "LONGTEXT")
     private String content;
     private String author;
     private String role;
