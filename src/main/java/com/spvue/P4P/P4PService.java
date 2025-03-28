@@ -55,7 +55,7 @@ public class P4PService {
         // 해당 복서의 새로운 랭킹을 임시로 설정
         targetP4P.setP4pRanking(newRanking);
         targetP4P.updateRankingDate(); // 랭킹 변경 날짜 업데이트
-        p4pRepository.save(targetP4P); // 임시 저장 (복서의 새로운 랭킹만 적용)
+        p4pRepository.save(targetP4P);
 
 
     }
