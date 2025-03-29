@@ -59,6 +59,10 @@ dependencies {
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.1.1'
 	implementation 'com.corundumstudio.socketio:netty-socketio:1.7.23'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
+	implementation 'io.jsonwebtoken:jjwt-gson:0.12.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.5'
 }
 
 tasks.named('test') {

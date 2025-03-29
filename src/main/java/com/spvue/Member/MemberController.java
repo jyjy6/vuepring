@@ -53,7 +53,6 @@ public class MemberController {
     }
 
 
-
     @GetMapping("/userinfo")
     public ResponseEntity<?> getUserInfo(Authentication auth) {
         if (auth.getPrincipal() == null) {
@@ -86,8 +85,74 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 필요");
     }
 
+    @PostMapping("/check-username")
+    public ResponseEntity<Map<String, Object>> checkUsername(@RequestBody Map<String, String> body) {
+        String username = body.get("username");
+        Map<String, Object> response = new HashMap<>();
+        // 아이디가 제공되지 않은 경우
+        if (username == null || username.trim().isEmpty()) {
+            response.put("available", false);
+            response.put("message", "아이디를 입력하세요.");
+            return ResponseEntity.ok(response);
+        }
+
+        try {
+            // 아이디 중복 검사
+            boolean exists = memberRepository.existsByUsername(username);
+
+            if (exists) {
+                response.put("available", false);
+                response.put("message", "이미 사용 중인 아이디입니다.");
+            } else {
+                response.put("available", true);
+                response.put("message", "사용 가능한 아이디입니다.");
+            }
+
+        } catch (Exception e) {
+            // 서버 오류 처리
+            response.put("available", false);
+            response.put("message", "서버 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+    @PostMapping("/check-displayname")
+    public ResponseEntity<Map<String, Object>> checkDisplayName(@RequestBody String displayName) {
+        System.out.println("디스플레이네임 확인함수");
+        Map<String, Object> response = new HashMap<>();
+        // 닉네임이 제공되지 않은 경우
+        if (displayName == null || displayName.trim().isEmpty()) {
+            response.put("available", false);
+            response.put("message", "닉네임을 입력하세요.");
+            return ResponseEntity.ok(response);
+        }
+
+        try {
+            // 닉네임 중복 검사
+            boolean exists = memberRepository.existsByDisplayName(displayName);
+
+            if (exists) {
+                response.put("available", false);
+                response.put("message", "이미 사용 중인 아이디입니다.");
+            } else {
+                response.put("available", true);
+                response.put("message", "사용 가능한 아이디입니다.");
+            }
+
+        } catch (Exception e) {
+            // 서버 오류 처리
+            response.put("available", false);
+            response.put("message", "서버 오류가 발생했습니다.");
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
 }
+
 
 
 

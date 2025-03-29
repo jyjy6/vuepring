@@ -42,6 +42,8 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return member.getId();
     }
 
+    public String getDisplayName(){return member.getDisplayName();}
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

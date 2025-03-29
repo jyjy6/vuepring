@@ -36,6 +36,9 @@ public class MemberService {
         // 비밀번호 암호화
         member.setPassword(passwordEncoder.encode(member.getPassword()));
 
+        member.setRole("USER");
+
+
         // 사용자 저장
         return memberRepository.save(member);
     }
