@@ -44,6 +44,9 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     public String getDisplayName(){return member.getDisplayName();}
 
+    public Member getMember(){return member;}
+
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -70,4 +73,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         this.member = member;
         this.attributes = null; // OAuth2가 아닌 경우 속성은 null
     }
+
 }

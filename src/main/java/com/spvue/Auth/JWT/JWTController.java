@@ -16,13 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login/jwt")
 @RequiredArgsConstructor // Lombok을 사용하여 생성자 주입
 public class JWTController {
 
     private final AuthenticationManager authenticationManager;
-
-    @PostMapping
+        @PostMapping("/login/jwt")
     public ResponseEntity<Map<String, String>> loginJWT(@RequestBody Map<String, String> data, HttpServletResponse response) {
         try {
             var authToken = new UsernamePasswordAuthenticationToken(
@@ -65,13 +63,30 @@ public class JWTController {
         }
     }
 
-    @GetMapping("/refresh")
-    public ResponseEntity<Map<String, String>> refresh(@CookieValue("refreshToken") String refreshToken, Authentication auth) {
-        if (JwtUtil.isTokenExpired(refreshToken)) {
+    @GetMapping("/refresh-token")
+    public ResponseEntity<Map<String, String>> refresh(@CookieValue("refreshToken") String refreshToken, Authentication auth) {        if (JwtUtil.isTokenExpired(refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "리프레시 토큰이 만료되었습니다."));
         }
 
         String newAccessToken = JwtUtil.createAccessToken(auth);
         return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        // HTTP Only 쿠키 삭제
+        Cookie accessCookie = new Cookie("accessToken", null);
+        accessCookie.setMaxAge(0);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setPath("/");
+        response.addCookie(accessCookie);
+
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setMaxAge(0);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setPath("/");
+        response.addCookie(refreshCookie);
+
+        return ResponseEntity.ok("로그아웃 성공");
     }
 }

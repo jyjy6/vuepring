@@ -59,9 +59,6 @@ public class SecurityConfig {
 ////                                .userService(customOAuth2UserService())  // 커스텀 OAuth2UserService 적용
 ////                        )
 ////                )
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-        );
         return http.build();
     }
 

@@ -1,8 +1,10 @@
 package com.spvue.Auth.JWT;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spvue.CustomUserDetails;
 import com.spvue.CustomUserDetailsService;
+import com.spvue.Member.MemberDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,9 +36,12 @@ public class JWTFilter extends OncePerRequestFilter {
             try {
                 // JWT에서 Claims 추출
                 Claims claims = JwtUtil.extractToken(jwt);
+                String userInfoJson = claims.get("userInfo", String.class);
 
-                // 사용자 이름 추출
-                String username = claims.get("username", String.class);
+                ObjectMapper objectMapper = new ObjectMapper();
+                MemberDto memberDto = objectMapper.readValue(userInfoJson, MemberDto.class);
+
+                String username = memberDto.getUsername();
 
                 // SecurityContext에 인증 정보가 없을 때만 처리
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

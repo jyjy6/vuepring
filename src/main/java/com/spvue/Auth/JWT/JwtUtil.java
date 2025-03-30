@@ -1,10 +1,18 @@
 package com.spvue.Auth.JWT;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spvue.CustomUserDetails;
+import com.spvue.Member.Member;
+import com.spvue.Member.MemberDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -14,27 +22,51 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
+    @Value("${jwt.key}")
+    private String jwtKey; // application.properties에서 값 주입
 
-    static final SecretKey key =
-            Keys.hmacShaKeyFor(Decoders.BASE64.decode(
-                    "jwtpassword123jwtpassword123jwtpassword123jwtpassword123jwtpassword"
-            ));
+    private static SecretKey key; // static 유지, final 제거
+
+    @PostConstruct
+    private void init() {
+        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtKey));
+    }
 
     // JWT 만들어주는 함수
     public static String createAccessToken(Authentication auth) {
 
-        CustomUserDetails member = (CustomUserDetails) auth.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        Member member = userDetails.getMember();
         String authorities = auth.getAuthorities().stream()
                 .map(a -> a.getAuthority()).collect(Collectors.joining(","));
+        // 원하는 정보만 포함한 DTO 생성
+        MemberDto memberDto = MemberDto.builder()
+                .id(member.getId())
+                .username(member.getUsername())
+                .displayName(member.getDisplayName())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .createdAt(member.getCreatedAt())
+                .role(authorities)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String memberJson = "";
+        try {
+            memberJson = objectMapper.writeValueAsString(memberDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while converting MemberDto to JSON", e);
+        }
+
+
 
         return Jwts.builder()
                 .setSubject(member.getUsername())
-                .claim("id", member.getId()) // Long 타입 ID를 클레임으로 추가
-                .claim("username", member.getUsername())
-                .claim("displayName",member.getDisplayName())
-                .claim("role", authorities) //추가함
+                .claim("userInfo", memberJson) // JSON 형태로 저장
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 3600000)) //유효기간 1시간
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(key)
                 .compact();
     }
