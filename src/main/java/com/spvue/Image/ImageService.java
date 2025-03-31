@@ -34,7 +34,7 @@ public class ImageService {
 
         String presignedUrl = s3Presigner.presignPutObject(preSignRequest).url().toString();
 
-        return s3Presigner.presignPutObject(preSignRequest).url().toString();
+        return presignedUrl;
     }
 
     public void saveImageInfo(String imageUrl, String imageName, String role){

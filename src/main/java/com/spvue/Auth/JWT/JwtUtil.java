@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spvue.CustomUserDetails;
+import com.spvue.CustomUserDetailsService;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberDto;
 import io.jsonwebtoken.Claims;
@@ -13,6 +14,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -35,11 +37,60 @@ public class JwtUtil {
     // JWT 만들어주는 함수
     public static String createAccessToken(Authentication auth) {
 
+        System.out.println("CreateAccesToken함수발동");
+        System.out.println(auth);
+        System.out.println(auth.getPrincipal());
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         Member member = userDetails.getMember();
         String authorities = auth.getAuthorities().stream()
                 .map(a -> a.getAuthority()).collect(Collectors.joining(","));
         // 원하는 정보만 포함한 DTO 생성
+        MemberDto memberDto = MemberDto.builder()
+                .id(member.getId())
+                .username(member.getUsername())
+                .displayName(member.getDisplayName())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .createdAt(member.getCreatedAt())
+                .role(authorities)
+                .build();
+
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        String memberJson = "";
+        try {
+            memberJson = objectMapper.writeValueAsString(memberDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while converting MemberDto to JSON", e);
+        }
+
+        return Jwts.builder()
+                .setSubject(member.getUsername())
+                .claim("userInfo", memberJson) // JSON 형태로 저장
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 60000))
+                .signWith(key)
+                .compact();
+    }
+
+    //    jwt재발급 해주는함수 메소드 오버라이딩
+    public static String createAccessToken(String username, CustomUserDetailsService userDetailsService) {
+        // username으로 사용자 정보를 로드
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
+
+
+        // 사용자 정보를 기반으로 Authentication 객체 생성 (패스워드는 null로 설정)
+        Authentication auth = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+
+        // 이제 기존의 createAccessToken(Authentication auth) 로직을 재사용할 수 있음
+        CustomUserDetails customUserDetails = (CustomUserDetails) auth.getPrincipal();
+        Member member = customUserDetails.getMember();
+        String authorities = auth.getAuthorities().stream()
+                .map(a -> a.getAuthority()).collect(Collectors.joining(","));
+
         MemberDto memberDto = MemberDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
@@ -60,16 +111,15 @@ public class JwtUtil {
             throw new RuntimeException("Error while converting MemberDto to JSON", e);
         }
 
-
-
         return Jwts.builder()
                 .setSubject(member.getUsername())
-                .claim("userInfo", memberJson) // JSON 형태로 저장
+                .claim("userInfo", memberJson)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .expiration(new Date(System.currentTimeMillis() + 60000))
                 .signWith(key)
                 .compact();
     }
+
 
     public static String createRefreshToken(String username) {
         return Jwts.builder()
@@ -81,7 +131,7 @@ public class JwtUtil {
     }
 
     // JWT 까주는 함수
-    public static Claims extractToken (String token){
+    public static Claims extractToken(String token) {
         Claims claims = Jwts.parser().verifyWith(key).build()
                 .parseSignedClaims(token).getPayload();
         return claims;

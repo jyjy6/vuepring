@@ -1,6 +1,7 @@
 package com.spvue;
 
 //import com.spvue.Auth.JWT.JWTFilter;
+import com.spvue.Auth.JWT.JWTFilter;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
@@ -47,18 +49,13 @@ public class SecurityConfig {
                 .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
         );
         http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ).authorizeHttpRequests(authorize -> authorize
-                .anyRequest().permitAll() // 나머지 요청도 허용
+                .requestMatchers("/api/news/post").authenticated() // 인증 필요
+                .anyRequest().permitAll() // 그 외 요청 허용
         );
-//        http.addFilterBefore(new JWTFilter(customUserDetailsService), ExceptionTranslationFilter.class);
-////                .oauth2Login(oauth2 -> oauth2
-////                        .loginPage("/login")  // 커스텀 로그인 페이지
-////                        .defaultSuccessUrl("http://localhost:8081/?loggedIn=true", true)
-////                        .userInfoEndpoint(userInfo -> userInfo
-////                                .userService(customOAuth2UserService())  // 커스텀 OAuth2UserService 적용
-////                        )
-////                )
+        http.addFilterBefore(new JWTFilter(customUserDetailsService), UsernamePasswordAuthenticationFilter.class); // ✅ 필터 추가
+
         return http.build();
     }
 
