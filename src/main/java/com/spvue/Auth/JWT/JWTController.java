@@ -67,18 +67,37 @@ public class JWTController {
     }
 
     @GetMapping("/refresh-token")
-    public ResponseEntity<Map<String, String>> refresh(@CookieValue("refreshToken") String refreshToken) {
-        if (JwtUtil.isTokenExpired(refreshToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "리프레시 토큰이 만료되었습니다."));
+    public ResponseEntity<Map<String, String>> refresh(@CookieValue(value = "refreshToken", required = false) String refreshToken) {
+        System.out.println("새 액세스 토큰 요청됨");
+
+        try {
+            // 리프레시 토큰이 없는 경우
+            if (refreshToken == null || refreshToken.isEmpty()) {
+                System.out.println("리프레시 토큰이 없음");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "리프레시 토큰이 존재하지 않습니다."));
+            }
+            // 리프레시 토큰 만료 확인
+            if (JwtUtil.isTokenExpired(refreshToken)) {
+                System.out.println("토큰 만료됨");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("message", "리프레시 토큰이 만료되었습니다."));
+            }
+
+            // 리프레시 토큰에서 사용자 정보(username 또는 userId) 추출
+            String username = JwtUtil.extractUsername(refreshToken);
+            // 추출한 사용자 정보로 새 액세스 토큰 생성
+            String newAccessToken = JwtUtil.createAccessToken(username, customUserDetailsService);
+            System.out.println("새 액세스 토큰 발급됨: " + newAccessToken);
+
+            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        } catch (Exception e) {
+            System.out.println("토큰 갱신 중 오류 발생: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "서버 오류로 인해 액세스 토큰을 갱신할 수 없습니다."));
         }
-        System.out.println("새액세스토큰 요청됨");
-        // 리프레시 토큰에서 사용자 정보(username 또는 userId) 추출
-        String username = JwtUtil.extractUsername(refreshToken);
-        // 추출한 사용자 정보로 새 액세스 토큰 생성
-        String newAccessToken = JwtUtil.createAccessToken(username, customUserDetailsService);
-        System.out.println("새액세스토큰 발급됨"+newAccessToken);
-        return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
     }
+
 
 
     @PostMapping("/logout")
