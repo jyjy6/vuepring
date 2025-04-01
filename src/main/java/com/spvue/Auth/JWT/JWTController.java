@@ -43,14 +43,14 @@ public class JWTController {
 
             // 쿠키 설정
             Cookie accessCookie = new Cookie("accessToken", accessToken);
-            accessCookie.setMaxAge(60 * 60); // 1시간
+            accessCookie.setMaxAge(60 * 60);
             accessCookie.setHttpOnly(true);
             accessCookie.setPath("/");
             accessCookie.setAttribute("SameSite", "None");
             response.addCookie(accessCookie);
 
             Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
-            refreshCookie.setMaxAge(60 * 60 * 7); // 7시간
+            refreshCookie.setMaxAge(60 * 60 * 24 * 7); // 7일
             refreshCookie.setHttpOnly(true);
             refreshCookie.setPath("/");
             response.addCookie(refreshCookie);
