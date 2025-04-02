@@ -45,12 +45,14 @@ public class ImageService {
         imageRepository.save(image);
     }
 
-    public void imageFinalSave(String imgURL){
-        Optional<Image> imageOptional = imageRepository.findByImageUrl(imgURL);
-        if (imageOptional.isPresent()) {
-            Image image = imageOptional.get();
-            image.setImgUsed(true);  // imgUsed 값을 true로 변경
-            imageRepository.save(image);  // 변경된 값 저장
+    public void imageFinalSave(String[] imgURL){
+        for (String img : imgURL){
+            Optional<Image> imageOptional = imageRepository.findByImageUrl(img);
+            if (imageOptional.isPresent()) {
+                Image image = imageOptional.get();
+                image.setImgUsed(true);  // imgUsed 값을 true로 변경
+                imageRepository.save(image);  // 변경된 값 저장
+            }
         }
     }
 

@@ -29,9 +29,7 @@ public class NewsService {
         news.setAuthor(username);
         news.setRole(role);
         newsRepository.save(news);
-        List<String> URLs = news.getFileURLs();
-        for (String imgURL : URLs) {
-            imageService.imageFinalSave(imgURL);  // 각 URL에 대해 imageFinalSave 호출
-        }
+        imageService.imageFinalSave(news.getFileURLs().toArray(new String[0]));
+
     }
 }

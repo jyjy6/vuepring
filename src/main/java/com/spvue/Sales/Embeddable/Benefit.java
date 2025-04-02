@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @Embeddable
 public class Benefit {
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
-    @Column(name = "amount", nullable = false)
+    @Column(name = "amount")
     private Integer amount;
 }

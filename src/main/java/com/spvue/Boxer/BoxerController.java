@@ -28,7 +28,7 @@ public class BoxerController {
     public ResponseEntity<String> addBoxer(@RequestBody Boxer boxer) {
         try {
             boxerService.saveBoxer(boxer);
-            String imgURL = boxer.getBoxerImg();
+            String[] imgURL = new String[]{boxer.getBoxerImg()};
             imageService.imageFinalSave(imgURL);
 
             return ResponseEntity.ok("성공적으로 저장되었습니다.");
@@ -54,7 +54,7 @@ public class BoxerController {
         try {
             boxerService.updateBoxerRank(boxer);
             boxerService.saveBoxer(boxer);
-            String imgURL = boxer.getBoxerImg();
+            String[] imgURL = new String[] {boxer.getBoxerImg()};
             imageService.imageFinalSave(imgURL);
 
             return ResponseEntity.ok("성공적으로 저장되었습니다.");

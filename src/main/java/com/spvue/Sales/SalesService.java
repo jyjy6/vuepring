@@ -5,6 +5,8 @@ import com.spvue.Image.ImageService;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +32,16 @@ public class SalesService {
 
 
         salesRepository.save(sales);
-        List<String> URLs = sales.getFileURLs();
-        for (String imgURL : URLs) {
-            imageService.imageFinalSave(imgURL);  // 각 URL에 대해 imageFinalSave 호출
-        }
+        imageService.imageFinalSave(sales.getFileURLs().toArray(new String[0]));
     }
 
     public List<Sales> findAll() {
         return salesRepository.findAll();
+    }
+
+
+    public Page<Sales> findPaginated(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return salesRepository.findAll(pageRequest);
     }
 }
