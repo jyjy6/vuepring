@@ -26,13 +26,11 @@ public class SalesAllDTO {
         private String condition;
         private String origin;
         private LocalDateTime createdAt;
-        private String author; // 필요한 정보만 포함
+        private String author;
         private List<Option> options;
         private List<Benefit> benefits;
         private List<ShippingInfo> shippingInfo;
         @ElementCollection
         private List<Discount> discounts;
 
-
-        // Getters and Setters
 }

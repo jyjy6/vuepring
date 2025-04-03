@@ -28,7 +28,6 @@ public class ImageCleanupService {
         for (Image image : unusedImages) {
             // S3에서 파일 삭제
             String s3Key = imageService.extractS3Key(image.getImageUrl());
-
             s3Client.deleteObject(DeleteObjectRequest.builder()
                     .bucket(bucket)
                     .key(s3Key)

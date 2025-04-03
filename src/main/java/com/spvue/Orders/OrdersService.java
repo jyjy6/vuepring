@@ -1,6 +1,7 @@
 package com.spvue.Orders;
 
 
+import com.spvue.Cart.CartRepository;
 import com.spvue.CustomUserDetails;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 public class OrdersService {
     private final OrdersRepository ordersRepository;
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
 
     public void updateOrderStatus(Long orderId, int statusCode) {
         // 주문을 ID로 조회
@@ -50,6 +52,7 @@ public class OrdersService {
 
             // OrderService를 통해 개별 아이템 저장
             ordersRepository.save(order);
+            cartRepository.deleteAllByMember_Username(user.getUsername());
         }
     }
 

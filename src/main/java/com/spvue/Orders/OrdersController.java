@@ -2,6 +2,7 @@ package com.spvue.Orders;
 
 
 import com.spvue.Orders.DTO.OrdersRequestDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrdersController {
     private final OrdersService ordersService;
 
+    @Transactional
     @PostMapping
     public ResponseEntity<String> saveOrder(@RequestBody OrdersRequestDTO ordersRequestDTO,
                                             Authentication auth) {
