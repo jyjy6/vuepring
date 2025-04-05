@@ -2,6 +2,7 @@ package com.spvue.Orders;
 
 
 import com.spvue.Orders.DTO.OrdersRequestDTO;
+import com.spvue.Orders.DTO.OrdersResponseDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/api/orders")
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrdersController {
     private final OrdersService ordersService;
 
-    @Transactional
+
     @PostMapping
     public ResponseEntity<String> saveOrder(@RequestBody OrdersRequestDTO ordersRequestDTO,
                                             Authentication auth) {
@@ -36,6 +39,12 @@ public class OrdersController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrdersResponseDTO>> getAllOrders() {
+        List<OrdersResponseDTO> orders = ordersService.getAllOrdersDTO();
+        return ResponseEntity.ok(orders);
+    }
+
 
     @PostMapping("/{orderId}/update-status")
     public ResponseEntity<String> updateOrderStatus(
@@ -49,5 +58,6 @@ public class OrdersController {
             return ResponseEntity.badRequest().body("Invalid status code: " + status);
         }
     }
+
 
 }

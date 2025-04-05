@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDto {
+    private Long id;
     private String title;
     private String color;
     private Integer price;
@@ -20,6 +21,7 @@ public class CartDto {
 //    프론트에서 get으로 받을떄 member통째로 받는현상이 일어나서 getMember().getUsername()으로 유저네임만 보내기위함
     public static CartDto fromEntity(Cart cart) {
         return new CartDto(
+                cart.getId(),
                 cart.getTitle(),
                 cart.getColor(),
                 cart.getPrice(),

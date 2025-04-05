@@ -78,6 +78,19 @@ public class CartController {
         }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteCart(@RequestParam("id") Long id) {
+        try {
+            // 예시: cartService를 통해 삭제 처리
+            cartService.deleteCartItemById(id);
+            return ResponseEntity.ok("삭제 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("삭제 중 오류 발생");
+        }
+    }
+
 
 
 }

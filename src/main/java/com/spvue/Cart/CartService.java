@@ -23,4 +23,12 @@ public class CartService {
                 .collect(Collectors.toList());
     }
 
+
+    public void deleteCartItemById(Long id) {
+        if (!cartRepository.existsById(id)) {
+            throw new IllegalArgumentException("존재하지 않는 장바구니 항목입니다.");
+        }
+        cartRepository.deleteById(id);
+    }
+
 }
