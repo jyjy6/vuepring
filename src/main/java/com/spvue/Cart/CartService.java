@@ -1,6 +1,6 @@
 package com.spvue.Cart;
 
-import com.spvue.CustomUserDetails;
+import com.spvue.Auth.OAuth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

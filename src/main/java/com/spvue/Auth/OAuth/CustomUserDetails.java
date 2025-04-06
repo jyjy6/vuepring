@@ -1,4 +1,4 @@
-package com.spvue;
+package com.spvue.Auth.OAuth;
 import com.spvue.Member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,14 +14,26 @@ import java.util.Map;
 public class CustomUserDetails implements UserDetails, OAuth2User {
 
     private final Member member;
-    private final Map<String, Object> attributes; // OAuth2User에서 사용하는 속성 값 저장
 
-
-    // OAuth2User 구현
+    private Map<String, Object> attributes;
+    public CustomUserDetails(Member member, Map<String, Object> attributes) {
+        this.member = member;
+        this.attributes = attributes;
+    }
+    //OAuth전용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
     }
+    @Override
+    public String getName() {
+        return member.getUsername();
+    }
+//   ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,14 +76,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
 
 
-//    OAuth
-    @Override
-    public String getName() {
-        return member.getUsername();
-    }
-    public CustomUserDetails(Member member) {
-        this.member = member;
-        this.attributes = null; // OAuth2가 아닌 경우 속성은 null
-    }
 
 }

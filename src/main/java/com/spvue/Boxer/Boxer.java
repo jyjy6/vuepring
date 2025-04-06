@@ -2,6 +2,8 @@ package com.spvue.Boxer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -41,6 +43,9 @@ public class Boxer {
     @Column(updatable = false)
     private LocalDateTime createdAt;
     private String boxerImg;
+
+
+    //생성자는 걍 NoArgs AlLArgs 하면되는데 그냥 멋있어보이려고 이 엔티티에만 직접적어놓음
 
     // 기본 생성자
     public Boxer() {

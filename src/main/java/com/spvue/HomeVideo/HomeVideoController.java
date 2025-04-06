@@ -1,8 +1,6 @@
 package com.spvue.HomeVideo;
 
 
-import com.spvue.Boxer.Boxer;
-import com.spvue.CustomUserDetails;
 import com.spvue.Image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

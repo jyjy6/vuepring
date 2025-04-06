@@ -1,19 +1,13 @@
 package com.spvue.Member;
 
-import ch.qos.logback.core.boolex.Matcher;
-import com.spvue.CustomUserDetails;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

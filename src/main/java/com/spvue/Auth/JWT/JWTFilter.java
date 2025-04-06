@@ -4,8 +4,8 @@ package com.spvue.Auth.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.spvue.CustomUserDetails;
-import com.spvue.CustomUserDetailsService;
+import com.spvue.Auth.OAuth.CustomUserDetails;
+import com.spvue.Auth.OAuth.CustomUserDetailsService;
 import com.spvue.Member.MemberDto;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -34,12 +34,28 @@ public class JWTFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         System.out.println("JWT 필터 시작 - 요청 URI: " + request.getRequestURI());
+        if (pathMatcher.match("/api/oauth/google", request.getRequestURI())) {
+            System.out.println("OAuth 요청이므로 JWT 필터를 건너뜁니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (pathMatcher.match("/login", request.getRequestURI())) {
+            System.out.println("로그인 요청이므로 JWT 필터를 건너뜁니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
         // refresh-token 요청인 경우 필터 건너뛰기
         if (pathMatcher.match(REFRESH_TOKEN_ENDPOINT, request.getRequestURI())) {
             System.out.println("refresh-token 요청이므로 JWT 필터를 건너뜁니다.");
             filterChain.doFilter(request, response);
             return;
         }
+        if (pathMatcher.match("/api/oauth/user/me", request.getRequestURI())) {
+            System.out.println("oauth/user 요청이므로 JWT 필터를 건너뜁니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         String authHeader = request.getHeader("Authorization");
         System.out.println("Auth Header: " + authHeader);

@@ -1,6 +1,6 @@
 package com.spvue.Sales;
 
-import com.spvue.CustomUserDetails;
+import com.spvue.Auth.OAuth.CustomUserDetails;
 import com.spvue.Image.ImageService;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberRepository;
@@ -10,9 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

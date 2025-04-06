@@ -2,7 +2,7 @@ package com.spvue.Orders;
 
 
 import com.spvue.Cart.CartRepository;
-import com.spvue.CustomUserDetails;
+import com.spvue.Auth.OAuth.CustomUserDetails;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberRepository;
 import com.spvue.Orders.DTO.CartItem;

@@ -1,21 +1,16 @@
 package com.spvue.Sales;
 
 
-import com.spvue.CustomUserDetails;
 import com.spvue.Member.MemberRepository;
-import com.spvue.Sales.Embeddable.Benefit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

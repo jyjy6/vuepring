@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.spvue.CustomUserDetails;
-import com.spvue.CustomUserDetailsService;
+import com.spvue.Auth.OAuth.CustomUserDetails;
+import com.spvue.Auth.OAuth.CustomUserDetailsService;
 import com.spvue.Member.Member;
 import com.spvue.Member.MemberDto;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -149,9 +150,18 @@ public class JwtUtil {
 
     //이 메서드는 JWT 토큰이 만료되었는지 여부를 확인하는 기능을 수행
     public static boolean isTokenExpired(String token) {
-        final Date expiration = extractClaims(token).getExpiration();
-        return expiration.before(new Date());
+        try {
+            final Date expiration = extractClaims(token).getExpiration();
+            return expiration.before(new Date());
+        } catch (ExpiredJwtException e) {
+            System.out.println("토큰이 만료되었습니다: " + e.getMessage());
+            return true;
+        } catch (Exception e) {
+            System.out.println("토큰 검증 중 오류 발생: " + e.getMessage());
+            return true; // 오류 났으면 만료된 걸로 간주
+        }
     }
+
 
     //이 메서드는 JWT 토큰에서 사용자 이름을 추출하는 기능을 수행
     public static String extractUsername(String token) {

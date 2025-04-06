@@ -1,12 +1,11 @@
 package com.spvue.Auth.JWT;
 
-import com.spvue.CustomUserDetailsService;
+import com.spvue.Auth.OAuth.CustomUserDetailsService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,7 +57,6 @@ public class JWTController {
             // 응답 바디 구성
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("accessToken", accessToken);
-            responseBody.put("refreshToken", refreshToken);
 
             return ResponseEntity.ok(responseBody);
         } catch (AuthenticationException e) {
