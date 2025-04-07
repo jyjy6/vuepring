@@ -19,5 +19,9 @@ public class MemberDto{
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String role;
+    private String profileImage;
+    private String country;
+    private String mainAddress;
+    private String subAddress;
 
 }

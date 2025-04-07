@@ -45,7 +45,7 @@ public class Boxer {
     private String boxerImg;
 
 
-    //생성자는 걍 NoArgs AlLArgs 하면되는데 그냥 멋있어보이려고 이 엔티티에만 직접적어놓음
+    //생성자는 걍 NoArgs AlLArgs하면되는데 있어보이려고 이 엔티티에만 직접적어놓음
 
     // 기본 생성자
     public Boxer() {

@@ -22,7 +22,7 @@ public class NewsController {
 
     @PostMapping("/post")
     public ResponseEntity<String> postNews(@RequestBody News news, Authentication auth) {
-        // 1. 비로그인 사용자 처리
+
         if (auth == null || !auth.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }

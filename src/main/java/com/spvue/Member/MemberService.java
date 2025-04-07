@@ -1,6 +1,8 @@
 package com.spvue.Member;
 
 
+import com.spvue.Auth.OAuth.CustomUserDetails;
+import com.spvue.Image.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
 
     public Member registerUser(Member member) {
@@ -43,24 +46,42 @@ public class MemberService {
     }
 
 
-    public Member editUser(Member member, Authentication auth) {
-        String username = auth.getName();
+    public MemberDto editUser(Member member, Authentication auth) {
+        String username = ((CustomUserDetails)auth.getPrincipal()).getUsername();
         if(!username.equals(member.getUsername())){
             throw new IllegalArgumentException("아이디는 수정할 수 없습니다.");
         }
 
-        Member editTargetMember = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Member not found"));
+        Member editTargetMember = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
         member.setId(editTargetMember.getId());
         member.setRole(editTargetMember.getRole());
 
-        // 비밀번호 처리 (이전 설명에서 했던 방법을 적용)
         if (member.getPassword() != null && !member.getPassword().isEmpty()) {
             member.setPassword(passwordEncoder.encode(member.getPassword()));
         } else {
             member.setPassword(editTargetMember.getPassword());
         }
+
         // 사용자 저장
-        return memberRepository.save(member);
+        memberRepository.save(member);
+        Optional.ofNullable(member.getProfileImage())
+                .ifPresent(img -> imageService.imageFinalSave(new String[] { img }));
+        MemberDto userInfo = MemberDto.builder()
+                .id(member.getId())
+                .username(member.getUsername())
+                .displayName(member.getDisplayName())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
+                .profileImage(member.getProfileImage())
+                .country(member.getCountry())
+                .mainAddress(member.getMainAddress())
+                .subAddress(member.getSubAddress())
+                .role(member.getRole())
+                .build();
+        return userInfo;
     }
 
     public ResponseEntity<String> validatePw(@RequestBody Map<String, String> requestBody){

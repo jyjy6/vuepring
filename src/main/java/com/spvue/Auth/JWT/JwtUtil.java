@@ -38,9 +38,6 @@ public class JwtUtil {
     // JWT 만들어주는 함수
     public static String createAccessToken(Authentication auth) {
 
-        System.out.println("CreateAccesToken함수발동");
-        System.out.println(auth);
-        System.out.println(auth.getPrincipal());
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
         Member member = userDetails.getMember();
         String authorities = auth.getAuthorities().stream()
@@ -54,6 +51,11 @@ public class JwtUtil {
                 .phone(member.getPhone())
                 .createdAt(member.getCreatedAt())
                 .role(authorities)
+                .updatedAt(member.getUpdatedAt())
+                .profileImage(member.getProfileImage())
+                .mainAddress(member.getMainAddress())
+                .subAddress(member.getSubAddress())
+                .country(member.getCountry())
                 .build();
 
 
@@ -76,7 +78,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    //    jwt재발급 해주는함수 메소드 오버라이딩
+    //    jwt재발급 해주는함수 메소드 오버라이딩 -> AccessToken이 만료되면 Authentication auth는 무효가 되기때문에 username
     public static String createAccessToken(String username, CustomUserDetailsService userDetailsService) {
         // username으로 사용자 정보를 로드
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(username);
@@ -100,6 +102,11 @@ public class JwtUtil {
                 .phone(member.getPhone())
                 .createdAt(member.getCreatedAt())
                 .role(authorities)
+                .updatedAt(member.getUpdatedAt())
+                .profileImage(member.getProfileImage())
+                .mainAddress(member.getMainAddress())
+                .subAddress(member.getSubAddress())
+                .country(member.getCountry())
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();

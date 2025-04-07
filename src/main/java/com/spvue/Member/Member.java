@@ -40,11 +40,21 @@ public class Member {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+
+
 //    계정 정보 마지막 수정 날짜.
     @UpdateTimestamp
     @Column(updatable = true)
     private LocalDateTime updatedAt;
-    private String role = "USER";
+    private String role = "ROLE_USER";
+
+    // 프로필 이미지 필드 추가
+    private String profileImage;
+
+    // 주소 관련 필드 추가
+    private String country;
+    private String mainAddress;
+    private String subAddress;
 
 
 }

@@ -1,5 +1,6 @@
 package com.spvue.Member;
 
+import com.spvue.Auth.OAuth.CustomUserDetails;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,15 +31,17 @@ public class MemberController {
         }
     }
 
-    @PutMapping("/edit")
-    public ResponseEntity<String> editUser(@RequestBody Member member, Authentication auth) {
+    @PutMapping("/modify")
+    public ResponseEntity<MemberDto> editUser(@RequestBody Member member, Authentication auth) {
         try {
-            memberService.editUser(member, auth);
-            return new ResponseEntity<>("User edit successfully", HttpStatus.CREATED);
+            System.out.println("인증정보" + auth);
+            MemberDto updatedUser = memberService.editUser(member, auth);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     @PostMapping("/validate")
@@ -111,7 +114,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/check-displayname")
-    public ResponseEntity<Map<String, Object>> checkDisplayName(@RequestBody String displayName) {
+    public ResponseEntity<Map<String, Object>> checkDisplayName(@RequestBody String displayName, Authentication auth) {
         System.out.println("디스플레이네임 확인함수");
         Map<String, Object> response = new HashMap<>();
         // 닉네임이 제공되지 않은 경우
@@ -124,6 +127,14 @@ public class MemberController {
         try {
             // 닉네임 중복 검사
             boolean exists = memberRepository.existsByDisplayName(displayName);
+            if (auth.isAuthenticated()){
+                String presentDisplayName = ((CustomUserDetails)auth.getPrincipal()).getDisplayName();
+                if(presentDisplayName.equals(displayName)){
+                    response.put("available", true);
+                    response.put("message", "지금 니 아이디입니다");
+                    return ResponseEntity.ok(response);
+                }
+            }
 
             if (exists) {
                 response.put("available", false);
