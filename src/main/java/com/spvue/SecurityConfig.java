@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity(debug = true)
+@EnableMethodSecurity
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
@@ -31,14 +33,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+        http.csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
         );
         http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         ).authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/news/post").authenticated() // 인증 필요
+                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/news/post").hasAuthority("ADMIN")
                 .anyRequest().permitAll() // 그 외 요청 허용
         );
         http.oauth2Login(oauth2 -> oauth2

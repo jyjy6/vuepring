@@ -4,16 +4,20 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
+@RequiredArgsConstructor
 public class SocketIOEventHandler {
     private final SocketIOServer server;
+    private final ChatMessageService chatMessageService;
 
-    @Autowired
-    public SocketIOEventHandler(SocketIOServer server) {
-        this.server = server;
+    @PostConstruct
+    public void init() {
         server.addConnectListener(onConnected());
         server.addDisconnectListener(onDisconnected());
         server.addEventListener("send_message", ChatMessage.class, onChatReceived());
@@ -35,6 +39,8 @@ public class SocketIOEventHandler {
     private DataListener<ChatMessage> onChatReceived() {
         return (client, data, ackRequest) -> {
             System.out.println("Message received: " + data.getMessage());
+
+            chatMessageService.saveMessage(data);
             // 메시지를 같은 방에 있는 모든 클라이언트에게 브로드캐스트
             server.getRoomOperations(data.getRoom()).sendEvent("receive_message", data);
         };

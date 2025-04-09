@@ -40,13 +40,14 @@ public class JWTController {
             String accessToken = JwtUtil.createAccessToken(auth2);
             String refreshToken = JwtUtil.createRefreshToken(auth2.getName());
 
-            // 쿠키 설정
-            Cookie accessCookie = new Cookie("accessToken", accessToken);
-            accessCookie.setMaxAge(60 * 60);
-            accessCookie.setHttpOnly(true);
-            accessCookie.setPath("/");
-            accessCookie.setAttribute("SameSite", "None");
-            response.addCookie(accessCookie);
+            // 쿠키 설정 액세스토큰은 localstorage에 저장하기때문에 굳이 필요없음.
+            // ->csrf 방어를위해 없는게 나음
+//            Cookie accessCookie = new Cookie("accessToken", accessToken);
+//            accessCookie.setMaxAge(60 * 60);
+//            accessCookie.setHttpOnly(true);
+//            accessCookie.setPath("/");
+//            accessCookie.setAttribute("SameSite", "None");
+//            response.addCookie(accessCookie);
 
             Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
             refreshCookie.setMaxAge(60 * 60 * 24 * 7); // 7일
