@@ -43,4 +43,5 @@ public class SalesService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return salesRepository.findAll(pageRequest);
     }
+
 }

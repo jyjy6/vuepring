@@ -28,13 +28,16 @@ public class OrdersService {
     private final SalesRepository salesRepository;
 
     public void updateOrderStatus(Long orderId, int statusCode) {
+
         // 주문을 ID로 조회
         Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order ID: " + orderId));
         // 상태 코드로부터 상태 업데이트
         order.updateDeliveryStatus(statusCode);
+
         // 변경된 상태로 주문 저장
         ordersRepository.save(order);
+
     }
 
 
@@ -61,12 +64,12 @@ public class OrdersService {
                 .username(order.getUsername() != null ? order.getUsername().getUsername() : "비회원")
                 .build();
     }
-    
-    
+
+
     @Transactional
     public void save(OrdersRequestDTO ordersRequestDTO, Authentication auth) {
-        Long memberId = ((CustomUserDetails)auth.getPrincipal()).getId();
-        Member user = memberRepository.findById(memberId).orElseThrow(()-> new IllegalArgumentException("그런유저 없음"));
+        Long memberId = ((CustomUserDetails) auth.getPrincipal()).getId();
+        Member user = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("그런유저 없음"));
 
         System.out.println(user);
         // orderRequest에서 필요한 정보 추출
@@ -90,7 +93,7 @@ public class OrdersService {
             order.setPrice(modelPrice);
             order.setColor(modelColor);
             order.setQuantity(item.getQuantity());
-            order.setTotalPrice(modelPrice*item.getQuantity());
+            order.setTotalPrice(modelPrice * item.getQuantity());
             order.setTitle(item.getTitle());
             order.setUsername(user);
 
@@ -119,7 +122,7 @@ public class OrdersService {
             order.setColor(modelColor);
             order.setTitle(item.getTitle());
             order.setQuantity(item.getQuantity());
-            order.setTotalPrice(modelPrice*item.getQuantity());
+            order.setTotalPrice(modelPrice * item.getQuantity());
 
             // 비회원의 경우 회원 정보는 null로 설정
             order.setUsername(null);

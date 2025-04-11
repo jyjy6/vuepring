@@ -6,14 +6,16 @@ import com.spvue.Sales.Embeddable.Discount;
 import com.spvue.Sales.Embeddable.Option;
 import com.spvue.Sales.Embeddable.ShippingInfo;
 import jakarta.persistence.ElementCollection;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SalesAllDTO {
 
         private Long id;

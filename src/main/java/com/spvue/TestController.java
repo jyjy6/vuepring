@@ -20,7 +20,8 @@ public class TestController {
         if (auth == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Session expired");
         }
-        return ResponseEntity.ok("Connection is alive");
+        System.out.println("살아있음");
+        return ResponseEntity.ok("ㄹㅇ살아있음");
     }
 
 
