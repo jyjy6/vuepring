@@ -46,7 +46,7 @@ public class Member {
     @UpdateTimestamp
     @Column(updatable = true)
     private LocalDateTime updatedAt;
-    private String role = "ROLE_USER";
+    private String role = "USER";
 
     // 프로필 이미지 필드 추가
     private String profileImage;

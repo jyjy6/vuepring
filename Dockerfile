@@ -1,10 +1,14 @@
-# 1. Java 21 (OpenJDK 22 SDK) 기반 이미지 사용
-FROM openjdk:21-slim
-# 2. 앱 실행을 위한 디렉토리 생성
+
+# 빌드 스테이지
+FROM gradle:8.5.0-jdk21 AS build
+WORKDIR /home/gradle/src
+COPY --chown=gradle:gradle . .
+RUN gradle build -x test --no-daemon
+
+# 실행 스테이지
+FROM eclipse-temurin:21-jre
 WORKDIR /app
-# 3. JAR 파일 복사
-COPY build/libs/spvue-0.0.1-SNAPSHOT.jar app.jar
-# 4. 컨테이너 실행 시 Java 애플리케이션 실행
-CMD ["java", "-jar", "app.jar"]
-# 5. 8080 포트 개방
+COPY --from=build /home/gradle/src/build/libs/spvue-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
+CMD ["java", "-jar", "app.jar"]
+
