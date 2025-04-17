@@ -44,6 +44,11 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (pathMatcher.match("/api/auth/csrf", request.getRequestURI())) {
+            System.out.println("CSRF 요청이므로 JWT 필터를 건너뜁니다.");
+            filterChain.doFilter(request, response);
+            return;
+        }
         // refresh-token 요청인 경우 필터 건너뛰기
         if (pathMatcher.match(REFRESH_TOKEN_ENDPOINT, request.getRequestURI())) {
             System.out.println("refresh-token 요청이므로 JWT 필터를 건너뜁니다.");
