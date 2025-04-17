@@ -24,7 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "http://218.38.160.152:5173/",
                         "https://218.38.160.152:5173/",
                         "http://15.165.158.46/",
-                        "https://15.165.158.46/"
+                        "https://15.165.158.46/",
+                        "http://ec2-15-165-158-46.ap-northeast-2.compute.amazonaws.com",
+                        "https://ec2-15-165-158-46.ap-northeast-2.compute.amazonaws.com"
                 )
 //                .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
