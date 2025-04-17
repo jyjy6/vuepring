@@ -13,8 +13,19 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173/","http://localhost:8081/", "http://localhost:80/", "http://localhost/", "http://218.38.160.152:5173/"
-                )  // allowedOrigins("*") 대신 사용
+                .allowedOrigins(
+                        "http://localhost:5173/",
+                        "https://localhost:5173/",
+                        "http://localhost:80/",
+                        "https://localhost:80/",
+                        "http://localhost/",
+                        "https://localhost/",
+                        "https://localhost:443/",
+                        "http://218.38.160.152:5173/",
+                        "https://218.38.160.152:5173/",
+                        "http://15.165.158.46/",
+                        "https://15.165.158.46/"
+                )
 //                .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")

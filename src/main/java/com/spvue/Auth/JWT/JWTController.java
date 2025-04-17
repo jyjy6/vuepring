@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor // Lombok을 사용하여 생성자 주입
 public class JWTController {
 

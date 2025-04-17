@@ -64,7 +64,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         // 방법 2: 프론트엔드로 리다이렉트 (SPA에서 활용)
 
-        String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/auth/google-callback")
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
                 .queryParam("accessToken", accessToken)
                 .build().toUriString();
 

@@ -25,7 +25,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
-    private static final String REFRESH_TOKEN_ENDPOINT = "/refresh-token";
+    private static final String REFRESH_TOKEN_ENDPOINT = "/api/refresh-token";
 
     @Override
     protected void doFilterInternal(
@@ -39,7 +39,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (pathMatcher.match("/login", request.getRequestURI())) {
+        if (pathMatcher.match("/api/login", request.getRequestURI())) {
             System.out.println("로그인 요청이므로 JWT 필터를 건너뜁니다.");
             filterChain.doFilter(request, response);
             return;

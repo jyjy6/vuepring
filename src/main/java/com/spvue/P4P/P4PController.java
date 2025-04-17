@@ -25,7 +25,7 @@ public class P4PController {
     private final BoxerRepository boxerRepository;
     private final P4PRepository p4pRepository;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> updateP4PRanking(@RequestBody P4PDto p4pDto) {
         Boxer boxer = boxerRepository.findById(p4pDto.getBoxerId())
@@ -37,14 +37,14 @@ public class P4PController {
         return ResponseEntity.ok("P4P 랭킹이 업데이트되었습니다.");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/log")
     public ResponseEntity<?> updateP4PLog() {
         p4pService.updateP4PLog();
         return ResponseEntity.ok("P4P 로그가 성공적으로 저장되었습니다.");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/reset")
     public ResponseEntity<?> setPreviousRank() {
         p4pService.setPreviousRank();
