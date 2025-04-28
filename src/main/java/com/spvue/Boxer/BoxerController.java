@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class BoxerController {
     private final BoxerService boxerService;
     private final ImageService imageService;
     private final BoxerRepository boxerRepository;
+
 
 
     @PostMapping("/add")
@@ -47,6 +49,7 @@ public class BoxerController {
 
         return result;
     }
+
 
 
     @PutMapping("/modify")

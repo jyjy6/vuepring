@@ -39,7 +39,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (pathMatcher.match("/api/login", request.getRequestURI())) {
+        if (pathMatcher.match("/api/login/jwt", request.getRequestURI())) {
             System.out.println("로그인 요청이므로 JWT 필터를 건너뜁니다.");
             filterChain.doFilter(request, response);
             return;
